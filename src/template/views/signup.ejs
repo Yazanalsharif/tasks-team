@@ -1,0 +1,31 @@
+<%- include("../partials/header") %>
+
+<div class="margin-all">
+<form class="formAuto" action="/signup" method="POST">
+    <div class="form-group">
+      <label for="exampleInputEmail1">USER Name</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name="userName" placeholder="username" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control"  id="exampleInputEmail1" aria-describedby="emailHelp"  name="email" placeholder="Email" >
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">password</label>
+        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name='password' placeholder="password" required>
+        <small id="emailHelp" class="form-text text-muted">your password encrypted</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Confirm password</label>
+        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  name='confirmPassword' placeholder="confirm password" required>
+      </div>
+    <button type="submit" class="btn btn-primary">sign-up</button>
+    <% if(error !== undefined) { %>
+      <p class="text-justify text-danger"> mistake: <%= error %> </p>
+    <%}%>
+  </form>
+ 
+  
+</div>
+  <%- include('../partials/footer') %> 

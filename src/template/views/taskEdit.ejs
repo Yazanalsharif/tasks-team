@@ -1,0 +1,25 @@
+<%- include('../partials/header.ejs'); %>
+<div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <div class="list-group">
+            <a href="/mytasks" class="list-group-item list-group-item-action active" aria-current="true">
+              Groups
+            </a>
+            <% groups.forEach(group=> { %>
+              <a href="/mytasks/<%= group.id %> " class="list-group-item list-group-item-action">
+                <%= group.teamname %>
+              </a>
+              <% }) %>
+          </div>
+        </div>
+        
+      </nav>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+      </main>
+    </div>
+  </div>
+
+<%- include('../partials/footer.ejs'); %>

@@ -1,0 +1,71 @@
+<%- include('../partials/header.ejs'); %>
+<div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <div class="list-group">
+            <a href="/mytasks" class="list-group-item list-group-item-action active" aria-current="true">
+              Groups
+            </a>
+            <% groups.forEach(group=> { %>
+              <a href="/mytasks/<%= group.id %> " class="list-group-item list-group-item-action">
+                <%= group.teamname %>
+              </a>
+              <% }) %>
+          </div>
+        </div>
+          <!-- users in the specific group-->
+          <div class="position-sticky pt-3">
+            <div class="list-group">
+              <a href="/mytasks" class="list-group-item list-group-item-action active" aria-current="true">
+                users in the group
+              </a>
+              <% usersInGroup.forEach(usersInGroup => { %>
+                <a class="list-group-item list-group-item-action">
+                  <%= usersInGroup.username %>
+                </a>
+                <% }) %>
+            </div>
+          </div>
+      </nav>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="adduser">
+      <form action="/mytasks/<%= owner.teamId %>/edit/adduser" method="POST">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">add users</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email" name="email">
+          <div id="emailHelp" class="form-text">add user by email</div>
+        </div>
+        <button type="submit" class="btn btn-primary">add</button>
+      </form>
+    </div>
+    <div class="deleteUser">
+      <form action="/mytasks/<%= owner.teamId %>/edit/deleteUser" method="POST">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">users</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="email" name="email">
+          <div id="emailHelp" class="form-text">delete user by email</div>
+        </div>
+        <button type="submit" class="btn btn-primary">delete</button>
+      </form>
+    </div>  
+
+    <div class="updateName">
+      <form action="/mytasks/<%= owner.teamId %>/edit/updateName" method="POST">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">update name</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="update the name of the group" name="groupName">
+        </div>
+        <button type="submit" class="btn btn-primary">update</button>
+      </form>
+    </div>
+    <% if(error) { %> 
+    <div class="alert alert-danger" role="alert">
+      <%= error %> 
+    </div>
+    <% } %> 
+    </main>
+    </div>
+  </div>
+
+<%- include('../partials/footer.ejs'); %>

@@ -1,0 +1,100 @@
+<%- include('../partials/header.ejs') %>
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <div class="list-group">
+            <a href="/mytasks" class="list-group-item list-group-item-action active" aria-current="true">
+              Groups
+            </a>
+            <% groups.forEach(group=> { %>
+              <a href="/mytasks/<%= group.id %> " class="list-group-item list-group-item-action">
+                <%= group.teamname %>
+              </a>
+              <% }) %>
+          </div>
+        </div>
+        <!-- users in the specific group-->
+        <div class="position-sticky pt-3">
+          <div class="list-group">
+            <a href="/mytasks" class="list-group-item list-group-item-action active" aria-current="true">
+              users in the group
+            </a>
+            <% usersInGroup.forEach(userInGrou=> { %>
+              <a class="list-group-item list-group-item-action">
+                <%= userInGrou.username %>
+              </a>
+              <% }) %>
+          </div>
+        </div>
+      </nav>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="taskInput">
+          <p class="fs-4" style="margin: 15px auto;">The Owner : <%= owner.username %>
+          </p>
+    
+          <% if(owner.ownId===user.id) { %>
+            <a href="<%= owner.teamId %>/edit" class="list-group-item list-group-item-action active"
+              aria-current="true">
+              Edit Groub
+            </a>
+            <% } %>
+              <form method="POST" action="/mytasks/<%= owner.teamId%>" >
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Create Task</label>
+                  <input type="text" class="form-control" id="task" style="height: 80px;" name="task"
+                    aria-describedby="emailHelp" placeholder="Enter your Task">
+                </div>
+                <button type="submit" class="btn btn-primary" id='createTask'>create Task</button>
+                <% if(error)  { %> 
+                <div class="alert alert-danger" style='margin-top: 10px;'role="alert">
+                  <%= error %>
+                </div>
+                <% } %>
+              </form>
+        </div>
+
+        <div class="uncomplitedTasks">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+              tasks not complited
+            </a>
+            <div id='uncompletedList'>
+              <% uncomplitedTasks.forEach(task => { %>
+                <!--href="/<%= task.teamId %>/<%= task.taskId %>"-->
+                <form method="POST" action="/mytasks/<%= task.teamId %>/editTasks">
+                <a  class="list-group-item list-group-item-action">
+                  <%= task.task %>
+                  <div class="btn-group btnInTask" role="group" aria-label="Basic mixed styles example">
+                    <button type="submit" class="btn btn-success" name="completeTask" value="<%= task.taskId %>">complete</button>
+                    <button type="submit" class="btn btn-danger" name="deleteTask" value="<%= task.taskId %>">delete</button>
+                  </div>
+                 </a>
+                </form>
+             <% }) %> 
+            </div>
+          </div>
+        </div>
+        <div class="complitedTasks">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+              complited tasks
+            </a>
+            <% complitedTasks.forEach(task => { %>
+              <form method="POST" action="/mytasks/<%= task.teamId %>/editTasks">
+              <a href="/<%= task.teamId%>/ <%= task.taskId %>" class="list-group-item list-group-item-action">
+                <%= task.task %> 
+                <div class="btn-group btnInTask" role="group" aria-label="Basic mixed styles example">
+                  <button type="submit" class="btn btn-success" name="uncompleteTask" value="<%= task.taskId %>">uncomplete</button>
+                  <button type="submit" class="btn btn-danger" name="deleteTask" value="<%= task.taskId %>">delete</button>
+                </div>
+              </a>
+            </form>
+           <% }) %> 
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+ 
+  <%- include('../partials/footer.ejs') %>

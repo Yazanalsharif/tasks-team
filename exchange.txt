@@ -1,0 +1,54 @@
+cross : 
+isolate :
+
+unrelize pnl : (face value / avg open price - face Value / avg market price) * num of positions = profit or loss in bnb 0.23
+
+relize pnl :  (face value / avg open price - face Value / avg close price) * num of positions = profit or loss in bnb 0.23
+
+
+example price : 32278.8 1 btc  after this order the price will be 33000 and the amount 0.5 btc 
+
+post only : open order on  price : 32300 X maker 
+
+IOC : open order on price : 32278.8 amount 2 btc  fill to 1 btc and canseling the order 
+
+FOK : open order on price : 32278 => canseling , open order on price : 33 amount 2 btc canseling the order 
+
+
+0.5
+
+
+-----------------
+
+loan btc = 0.5 BTC on 10,000$ and it equal 5000$
+
+SELL 0.5 BTC = 5000$ YOUR ACCOUNT NOW HAVE 5000 USDT
+
+BTC => 15000
+IF BTC BECOME HEIGH 0.5 BTC = 5000$ - 7500$ = -2500$ from your ACCOUNT
+
+BTC => 5000$
+BUY 0.5 BTC ON 5000$ and that equal 2500$
+
+repay the bitcoin to the exchange 
+
+2500$.
+
+liq the account,
+
+I have 250$ in my account and i loan 250$ 
+
+i buy btc on 10000$ by 500$ 
+
+//if the btc become 5000$ 
+the balance in my account is 250$ 
+if loan == the balance in my account => the account liq and the balance = 0$
+
+
+
+
+
+
+
+
+
