@@ -35,9 +35,11 @@ const registerUser = async (req, res, next) => {
             throw new Error('the password must contain letter, number and Simpols');
         }
 
-        if (validator.isEmpty(data.confirmPassword, { ignore_whitespace: true }) || !validator.password === validator.confirmPassword) {
+        if (validator.isEmpty(data.confirmPassword, { ignore_whitespace: true }) || validator.password !== validator.confirmPassword) {
             throw new Error('the passwords does\'t the same ');
         }
+
+
 
         //send the data that you want to register in database to usersModule
         const result = await usersModule.insertUser({
