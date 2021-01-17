@@ -34,8 +34,8 @@ const registerUser = async (req, res, next) => {
         if (validator.isEmpty(data.password, { ignore_whitespace: true }) || validator.isAlphanumeric(data.password)) {
             throw new Error('the password must contain letter, number and Simpols');
         }
-
-        if (validator.isEmpty(data.confirmPassword, { ignore_whitespace: true }) || validator.password !== validator.confirmPassword) {
+        
+        if (validator.isEmpty(data.confirmPassword, { ignore_whitespace: true }) || data.password !== data.confirmPassword) {
             throw new Error('the passwords does\'t the same ');
         }
 
