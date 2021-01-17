@@ -33,6 +33,7 @@ const postLogin = async (req, res) => {
 
         res.redirect('/');
     }catch(err) {
+        console.log(err);
         req.flash('loginErr', err);
         res.redirect('/login');
     }
