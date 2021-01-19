@@ -5,10 +5,9 @@ const userModule = require('../modules/usersModule');
 
 router.get("/", auth, async (req, res) => {
     try {
-        const user = await userModule.findUserById(req.id);
 
         res.render('home', {
-            user
+            user: req.user
         });
 
     } catch(error) {

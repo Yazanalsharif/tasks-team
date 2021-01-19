@@ -5,12 +5,12 @@ const updateTasks = async (req, res) => {
     const data =  req.body;
     const teamId = req.params.id;
     try{
-        if(!req.id) {
+        if(!req.user) {
             return res.redirect('/');
         }
-
+        const user = req.user;
         //to make sure only who joined group can edit or delete the task 
-        const joinedGroup = await taskGroup.joinedGroup(req.id, teamId);
+        const joinedGroup = await taskGroup.joinedGroup(user.id, teamId);
         if(!joinedGroup) {
             return res.redirect('/mytasks');
         }
@@ -23,9 +23,9 @@ const updateTasks = async (req, res) => {
             await taskEdit.changeCompleteTask(data.complete);
         }
 
-        res.redirect('/mytasks/'+teamId);
+        res.redirect('/mytasks/' + teamId);
     }catch(error) {
-        res.redirect('/mytasks/'+teamId);
+        res.redirect('/mytasks/' + teamId);
     }
 }
 

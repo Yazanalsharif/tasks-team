@@ -1,13 +1,10 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
 const userModule = require('../modules/usersModule');
-const flash = require('flash');
 
-const router = express.Router();
 
 const getLogin =  async (req, res) => {
     try {
-        if(req.id) {
+        if(req.user) {
             return res.redirect('/');
         }
 
@@ -39,7 +36,18 @@ const postLogin = async (req, res) => {
     }
 }
 
+const logout = async (req, res) => {
+    try {
+        if (!req.user) {
+            throw new Error('you are not auth');
+        }
+        res.clearCookie('token');
+        res.redirect('/');
+    } catch (err) {
+        res.status(400).send({ error: err.message });
+    }
+}
 
-module.exports = {getLogin, postLogin};
+module.exports = {getLogin, postLogin, logout};
 
 

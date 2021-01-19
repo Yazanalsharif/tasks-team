@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const userModule = require('../modules/usersModule');
 
 
 const auth = async (req, res, next) => {
@@ -11,7 +11,8 @@ const auth = async (req, res, next) => {
         }
 
         const decrypt = jwt.verify(token, process.env.JWTSECRT);
-        req.id = decrypt.id;
+        const user = await userModule.findUserById(decrypt.id);
+        req.user = user;
         next();
     }catch(err){
         return res.status(500).send(err)

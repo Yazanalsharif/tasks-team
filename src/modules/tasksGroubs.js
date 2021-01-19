@@ -66,7 +66,7 @@ const joinedGroup = (userId, groupId) => {
             user_id = ?
             AND team_id = ?`;
             //pool to connect with mysql server and the app
-            pool.query(q, [userId, groupId], (err, results, fields) => {
+            pool.query(q, [userId, groupId], (err, results) => {
                 if(err) {
                     //close the connection
                     connection.release();

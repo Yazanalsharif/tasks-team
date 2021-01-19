@@ -2,11 +2,11 @@ const userModule = require('../modules/usersModule');
 const moment = require('moment');
 const getProfile = async (req, res) => {
     try{
-        if(!req.id) {
+        if(!req.user) {
             return res.redirect('/');
         }
-        //get the user by id from database
-        const user = await userModule.findUserById(req.id);
+
+        const user = req.user;
         //here the process for using spacific format for time
         //get the numbericTime 
         const numbericTime = user.created_at.getTime();

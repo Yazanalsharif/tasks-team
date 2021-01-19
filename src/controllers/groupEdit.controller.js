@@ -5,9 +5,9 @@ const groupEdit = require('../modules/groupEdit.module');
 
 const getGroupEditPage = async (req, res) => {
     const teamId = req.params.id;
-    const userId = req.id;
+    const user = req.user;
     try{
-        if(!userId) {
+        if(!user) {
             return res.redirect('/');
          }
          
@@ -16,11 +16,12 @@ const getGroupEditPage = async (req, res) => {
              return res.redirect('/');
          }
          
-         if(owner.ownId !== userId) {
+         if(owner.ownId !== user.id) {
              return res.redirect('/mytasks');
          }
-         const user = await userModule.findUserById(req.id);
-         const groups = await tasksGroubs.getGroups(req.id);
+
+         
+         const groups = await tasksGroubs.getGroups(user.id);
          const usersInGroup  = await groupEdit.getAllUsersFromGroup(teamId);
          res.render('groupEdit', {
              error: req.flash('error')[0],
@@ -40,27 +41,26 @@ const addUserToGroup = async (req, res) => {
     const userEmail = req.body.email;
     try{
 
-        if(!req.id){
+        if(!req.user){
             return res.redirect('/');
         }
-
+        const user = req.user
         const owner = await tasksGroubs.getOwnFromTeam(teamId);
         
         if(!owner) {
             return res.redirect('/mytasks');
         }
 
-        if(owner.ownId !== req.id) {
+        if(owner.ownId !== user.id) {
             return res.redirect('/mytasks/teamId');
         }
 
-        const user = await userModule.findUserByEmail(userEmail);
-        
-        if(!user) {
+        const newUser = await userModule.findUserByEmail(userEmail);
+        if(!newUser) {
             throw new Error('the user you looking for is not exist');
         }
 
-        const userJoined = await groupEdit.insertUserInGroup(user.id, teamId);
+        await groupEdit.insertUserInGroup(newUser.id, teamId);
         res.redirect(`/mytasks/${teamId}/edit`);
     }catch(err) {
         if(err.message) {
@@ -79,37 +79,36 @@ const deleteUserFromGroup = async (req, res) => {
     const userEmail = req.body.email;
     try{
 
-        if(!req.id){
+        if(!req.user){
             return res.redirect('/');
         }
-
         const owner = await tasksGroubs.getOwnFromTeam(teamId);
         
         if(!owner) {
             return res.redirect('/mytasks');
         }
 
-        if(owner.ownId !== req.id) {
+        if(owner.ownId !== req.user.id) {
             return res.redirect('/mytasks/teamId');
         }
         
-        const user = await userModule.findUserByEmail(userEmail);
+        const deletedUser = await userModule.findUserByEmail(userEmail);
         
-        if(!user) {
+        if(!deletedUser) {
             throw new Error('the user you looking for is not exist');
         }
 
-        if(user.id === owner.ownId) {
+        if(deletedUser.id === owner.ownId) {
             throw new Error('you can\'t delete the owner if you want to delete all group click delete Group');
         }
 
-        const isJoinedGroup = await tasksGroubs.joinedGroup(user.id, teamId);
+        const isJoinedGroup = await tasksGroubs.joinedGroup(deletedUser.id, teamId);
 
         if(!isJoinedGroup) {
-            throw new Error('the user did\'t joined the group');
+            throw new Error('the user does\'t join the group');
         }
 
-        await groupEdit.deleteUserFromGroup(user.id, teamId);
+        await groupEdit.deleteUserFromGroup(deletedUser.id, teamId);
 
         res.redirect(`/mytasks/${teamId}/edit`);
 
@@ -130,7 +129,7 @@ const updateName = async (req, res) => {
     const groupName = req.body.groupName;
     try{
 
-        if(!req.id){
+        if(!req.user){
             return res.redirect('/');
         }
 
@@ -140,7 +139,7 @@ const updateName = async (req, res) => {
             return res.redirect('/mytasks');
         }
 
-        if(owner.ownId !== req.id) {
+        if(owner.ownId !== req.user.id) {
             return res.redirect('/mytasks/teamId');
         }
 

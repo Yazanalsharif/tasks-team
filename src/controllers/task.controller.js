@@ -6,12 +6,12 @@ const groupEditModule = require('../modules/groupEdit.module');
 
 const getTaskPage = async (req, res) => {
     try{
-        if(!req.id){
+        if(!req.user){
             return res.redirect('/');
         }
         
-        const user = await userModule.findUserById(req.id);
-        const groups = await tasksGroubs.getGroups(req.id);
+        const user = req.user;
+        const groups = await tasksGroubs.getGroups(user.id);
         
         res.render('tasks', {
             user,
@@ -25,10 +25,12 @@ const getTaskPage = async (req, res) => {
 
 const createTaskGroup = async (req, res) => {
     try{
-        if(!req.id) {
+        if(!req.user) {
             return res.redirect('/')
         }
-        
+
+        const user = req.user;
+
         if(validator.isEmpty(req.body.teamName, {ignore_whitespace:true})) {
             throw new Error('the name could not be empty');
         }
@@ -39,8 +41,9 @@ const createTaskGroup = async (req, res) => {
 
         const createGroup = await tasksGroubs.insertGroup({
             teamname:req.body.teamName,
-            own:req.id
+            own:user.id
         });
+
         res.redirect('/mytasks');
     }catch(err) {
         if(err.message) {
@@ -57,25 +60,25 @@ const getTaskGroup = async (req, res) => {
     //get id of the team from params
     const _id = req.params.id;
     try{
-        const user = await userModule.findUserById(req.id);
-        const groups = await tasksGroubs.getGroups(req.id);
-        
-        if(!req.id) {
+
+        if(!req.user) {
             return res.redirect('/mytasks');
         }
 
+        const user = req.user;
+        const groups = await tasksGroubs.getGroups(user.id);
 
         //check if there is releasion between user and team
-        const team = await tasksGroubs.joinedGroup(req.id, _id);
-        if(team.length === 0) {
+        const team = await tasksGroubs.joinedGroup(user.id, _id);
+        if(!team) {
             //you have to create page for you are not allwoed to join this team
             return res.redirect('/mytasks');
         }
         //get owner to display in groups
         const owner = await tasksGroubs.getOwnFromTeam(_id);
         
-        const uncomplitedTasks = await tasksGroubs.getTasksGroup(req.id, _id, false);
-        const complitedTasks = await tasksGroubs.getTasksGroup(req.id, _id, true);
+        const uncomplitedTasks = await tasksGroubs.getTasksGroup(user.id, _id, false);
+        const complitedTasks = await tasksGroubs.getTasksGroup(user.id, _id, true);
         const usersInGroup = await groupEditModule.getAllUsersFromGroup(_id);
         res.render('taskGroup', {
             usersInGroup,
@@ -98,9 +101,10 @@ const createNewTask = async (req, res) => {
     const teamId = req.params.id;
     try {
 
-        if(!req.id) {
+        if(!req.user) {
             return redirect('/');
         }
+        
         if(validator.isEmpty(task, {ignore_whitespace: true})){
            throw new Error('the task can\'t be empty');
         }

@@ -17,7 +17,7 @@ const profileRoute = require('./route/profile');
 const taskRoute = require('./route/tasks');
 const groupEditRoute = require('./route/editGroupRouter');
 const editTaskRoute = require('./route/editTask.router');
-
+const notFound = require('./route/NotFoundRouter');
 
 //get the app
 const app = express();
@@ -76,7 +76,7 @@ app.use(profileRoute);
 app.use(taskRoute);
 app.use(groupEditRoute);
 app.use(editTaskRoute);
-
+app.use(notFound);
 
 
 server.listen(port, () => {

@@ -10,6 +10,7 @@ router.post('/mytasks/:id/edit/adduser', auth, taskGroupEditController.addUserTo
 
 router.post('/mytasks/:id/edit/deleteUser', auth, taskGroupEditController.deleteUserFromGroup);
 
-
 router.post('/mytasks/:id/edit/updateName', auth, taskGroupEditController.updateName);
+
+
 module.exports = router;

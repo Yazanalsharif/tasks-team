@@ -3,13 +3,17 @@ const usersModule = require('../modules/usersModule');
 
 const getSignPage = (req, res) => {
     try {
-        if(req.id) {
+
+        if(req.user) {
             return res.redirect('/');
         }
+
         res.render('signup', {
             user:undefined,
             error: req.flash('err')[0]
         });
+
+
     } catch (error) {
         res.status(500).send({ error: "server Error" });
     }
@@ -17,7 +21,7 @@ const getSignPage = (req, res) => {
 
 
 
-const registerUser = async (req, res, next) => {
+const registerUser = async (req, res) => {
     const data = req.body;
 
     try {
@@ -42,12 +46,14 @@ const registerUser = async (req, res, next) => {
 
 
         //send the data that you want to register in database to usersModule
-        const result = await usersModule.insertUser({
+        await usersModule.insertUser({
             username: data.userName,
             email: data.email,
             user_password: data.password
         });
+        
         res.redirect('/login');
+
     } catch (error) {
         if (error.message) {
             req.flash('err', error.message);
